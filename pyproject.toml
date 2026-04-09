@@ -1,0 +1,17 @@
+[project]
+name = "firstweek-assignment"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "kagglehub>=1.0.0",
+    "matplotlib>=3.10.8",
+    "numpy>=2.4.4",
+    "ollama>=0.6.1",
+    "pandas>=3.0.2",
+    "python-dotenv>=1.2.2",
+    "requests>=2.33.1",
+    "scikit-learn>=1.8.0",
+    "supabase>=2.28.3",
+]
