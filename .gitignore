@@ -7,3 +7,5 @@ venv/
 data/raw/
 models/*.pkl
 *.log
+# Raw data (too large, can be regenerated)
+data/raw/*.csv
