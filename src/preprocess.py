@@ -24,29 +24,37 @@ def encode_categorical(df):
     df_encoded['employment_type_enc'] = df_encoded['employment_type'].map(employment_map)
     df_encoded['company_size_enc'] = df_encoded['company_size'].map(company_size_map)
     
-    # Frequency encoding for job_title (replace with popularity)
+    # Frequency encoding for job_title
     job_title_freq = df_encoded['job_title'].value_counts(normalize=True)
     df_encoded['job_title_enc'] = df_encoded['job_title'].map(job_title_freq)
     
-    # Feature columns
-    feature_cols = [
-        'experience_level_enc',
-        'employment_type_enc',
-        'company_size_enc',
-        'remote_ratio',
-        'job_title_enc'
-    ]
+    # New feature: high-cost location based on employee_residence
+    high_cost_countries = ['US', 'GB', 'CA', 'AU', 'DE', 'FR', 'NL', 'CH', 'SG', 'IL', 'JP', 'KR', 'NO', 'SE', 'DK', 'FI']
+    df_encoded['high_cost_location'] = df_encoded['employee_residence'].isin(high_cost_countries).astype(int)
+    
+    # work_year is already numerical, keep as is
+    # No need to create a separate column, just use df_encoded['work_year']
+    
+    # Feature columns (INCLUDING the new ones)
+    feature_cols  = [
+    'experience_level_enc',
+    'job_title_enc',
+    'work_year',
+    'high_cost_location'
+]     # added
+    
     
     X = df_encoded[feature_cols]
     y = df_encoded['salary_in_usd']
     
-    # Save mappings for later use (FastAPI, local pipeline)
+    # Save only necessary mappings (not the whole columns)
     mappings = {
         'experience_map': experience_map,
         'employment_map': employment_map,
         'company_size_map': company_size_map,
         'job_title_freq': job_title_freq.to_dict(),
         'feature_cols': feature_cols
+        # Do NOT store work_year or high_cost_location columns here
     }
     
     return X, y, mappings
