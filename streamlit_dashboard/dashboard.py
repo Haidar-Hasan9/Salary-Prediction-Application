@@ -79,6 +79,20 @@ with col2:
         st.image(image, caption="Salary by Experience Level")
     else:
         st.info("No chart available.")
+# --- Extra Chart: Average Salary by Job Title ---
+st.subheader("📊 Average Salary by Job Title")
+job_avg = filtered_df.groupby("job_title")["predicted_salary_usd"].mean().sort_values(ascending=False)
+st.bar_chart(job_avg)
+
+# --- Extra Table: Summary Statistics ---
+st.subheader("📈 Summary Statistics Table")
+stats = filtered_df.groupby("experience_level").agg(
+    Count=("predicted_salary_usd", "count"),
+    Avg_Salary=("predicted_salary_usd", "mean"),
+    Min_Salary=("predicted_salary_usd", "min"),
+    Max_Salary=("predicted_salary_usd", "max")
+).round(2)
+st.dataframe(stats)
 
 # ---- Optional: Show a row selector for detailed view ----
 st.subheader("🔍 Detailed View")
